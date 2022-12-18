@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description:
+  Using Config Tag Rules,use by EventBridge and email by SNS
+# ------------------------------------------------------------#
+#  Metadata
+# ------------------------------------------------------------#
+Metadata:
+  "AWS::CloudFormation::Interface":
+    ParameterGroups:
+      - Label:
+          default: "Eventbridge Configuration"
+        Parameters:
+          - Name
+          - EventBusName
+          - State
+# ------------------------------------------------------------#
+# Input Parameters
+# ------------------------------------------------------------# 
+Parameters:
+  EventBusName:
+    Type: String
+    Default: "default"
+  Name:
+    Type: String
+    Default: "cfn-evb-tagrule-inamura"
+  State:
+    Type: String
+    Default: "ENABLED"
+
+# ------------------------------------------------------------#
+#  EventBridge
+# ------------------------------------------------------------#
+Resources:
+  EventsRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "Using Config Tag Rules,use by EventBridge and email by SNS"
+      EventBusName: !Ref EventBusName
+      Name: !Ref Name
+      State: !Ref State
+      EventPattern:
+        source: 
+          - aws.config
+        detail-type:
+          - Config Rules Compliance Change
+        detail:
+          messageType:
+            - ComplianceChangeNotification
+          configRuleName:
+            - required-tags
+          newEvaluationResult:
+            complianceType: 
+              - NON_COMPLIANT
+      Targets:
+        - Arn: !ImportValue cfn-sns-topic-inamura-arn
+          Id: "cfn-sns-topic-inamura-arn"
+      
+  EventTopicPolicy:
+    Type: 'AWS::SNS::TopicPolicy'
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: 'sns:Publish'
+            Resource: '*'
+      Topics:
+        - !Ref MySNSTopic

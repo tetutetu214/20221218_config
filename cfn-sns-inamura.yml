@@ -12,18 +12,12 @@ Metadata:
         Parameters:
         - TopicName
         - Endpoint
-        - EventCategories
-        - SourceType
     
     ParameterLabels:
       TopicName:
-        default: "DBInstanceName"
+        default: "TopicName"
       Endpoint:
         default: "MailAddress"
-      EventCategories:
-        default: "EventCategories: availability,backtrack,backup,configuration change,creation, deletion, failover, failure, low storage, maintenance, notification, read replica, recovery, restoration" 
-      SourceType:
-        default: "SourceType"    
 
 # ------------------------------------------------------------#
 #  InputParameters
@@ -35,14 +29,6 @@ Parameters:
   Endpoint:
     Type: String
     Default: "XXXXXXXXXX@gmail.com"
-  EventCategories:
-    Default: "availability"
-    Type: CommaDelimitedList
-    AllowedValues: [ "availability", "backtrack", "backup", "configuration change", "creation", "deletion", "failover", "failure", "low storage", "maintenance", "notification", "read replica", "recovery", "restoration" ]
-  SourceType:
-    Default: "db-instance"
-    Type: String
-    AllowedValues: [ "db-instance", "db-security-group", "db-parameter-group", "db-snapshot", "db-cluster", "db-cluster-snapshot" ]
 
 # ------------------------------------------------------------#
 #  Resources
@@ -53,10 +39,11 @@ Resources:
     Properties:
       TopicName: !Ref TopicName
       Subscription:
-        - Endpoint: !ImportValue cfn-lmd-inamura-arn
-          Protocol: lambda
         - Endpoint: !Ref Endpoint
           Protocol: email
+      Tags:
+        - Key: "User"
+          Value: "inamura"    
 
   TopicPolicy:
     Type: AWS::SNS::TopicPolicy
@@ -75,12 +62,15 @@ Resources:
             Condition:
               ArnLike:
                 aws:SourceArn: !Sub arn:aws:rds:${AWS::Region}:${AWS::AccountId}:*
-
 # ------------------------------------------------------------#
 # Output Parameters
 # ------------------------------------------------------------#                
 Outputs:
-  LambdaArn:
+  SNSArn:
     Value: !Ref SNSTopic
     Export:
       Name: !Sub "${TopicName}-arn"
+  SNSTopicName:
+    Value: !Ref TopicName
+    Export:
+      Name: !Ref TopicName

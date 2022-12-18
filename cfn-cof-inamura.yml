@@ -19,7 +19,7 @@ Parameters:
   ConfigRuleName:
     Description: "config rule(required-tags) name"
     Type: String
-    Default: required-tags-inamura
+    Default: cfn-con-requiredtags-inamura
   tag1Key:
     Description: "Key of the required tag."
     Type: String
