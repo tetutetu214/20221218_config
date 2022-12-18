@@ -34,7 +34,7 @@ Parameters:
     Default: "cfn-sns-topic-inamura"
   Endpoint:
     Type: String
-    Default: "lemoned.i.scream.art.of.noise@gmail.com"
+    Default: "XXXXXXXXXX@gmail.com"
   EventCategories:
     Default: "availability"
     Type: CommaDelimitedList
