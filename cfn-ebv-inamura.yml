@@ -54,16 +54,21 @@ Resources:
       Targets:
         - Arn: !ImportValue cfn-sns-topic-inamura-arn
           Id: "cfn-sns-topic-inamura-arn"
-      
-  EventTopicPolicy:
-    Type: 'AWS::SNS::TopicPolicy'
-    Properties:
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: events.amazonaws.com
-            Action: 'sns:Publish'
-            Resource: '*'
-      Topics:
-        - !Ref MySNSTopic
+          InputTransformer:
+            InputPathsMap:
+              "awsRegion" : "$.detail.awsRegion"
+              "resourceType" : "$.detail.resourceType"
+              "resourceId" : "$.detail.resourceId"
+              "time" : "$.detail.newEvaluationResult.resultRecordedTime"
+              "compliance" : "$.detail.newEvaluationResult.complianceType"
+              "rule" : "$.detail.configRuleName"
+            InputTemplate: |
+              "Userタグのないリソースが作成されました!"
+              "発生時間       : <time>"
+              "ルール名       : <rule>"
+              "リソースタイプ : <resourceType>"
+              "リソースID     : <resourceId>"
+
+              "上記リソースが <compliance> 判定となりました。"
+              "詳細は以下URLよりご確認ください。"
+              "https://console.aws.amazon.com/config/home?region=<awsRegion>#/timeline/<resourceType>/<resourceId>/configuration"
