@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description:
+  Config Rule required-tags check
+# ------------------------------------------------------------#
+#  Metadata
+# ------------------------------------------------------------#
+Metadata:
+  "AWS::CloudFormation::Interface":
+    ParameterGroups:
+      - Label:
+          default: "AWS Config Configuration"
+        Parameters:
+          - ConfigRuleName
+          - tag1Key
+# ------------------------------------------------------------#
+# Input Parameters
+# ------------------------------------------------------------# 
+Parameters:
+  ConfigRuleName:
+    Description: "config rule(required-tags) name"
+    Type: String
+    Default: required-tags-inamura
+  tag1Key:
+    Description: "Key of the required tag."
+    Type: String
+    Default: User
+
+# ------------------------------------------------------------#
+#  Resource
+# ------------------------------------------------------------#
+Resources:
+  ConfigRule:
+    Type: AWS::Config::ConfigRule
+    Properties: 
+      ConfigRuleName: !Ref ConfigRuleName
+      Description: "リソースに、指定するタグがリソースにあるかどうかを確認します。例えば、'Name'タグが EC2 インスタンスに存在するかどうかを確認できます。複数の値はカンマで区切ります。"
+      Source: 
+        Owner: AWS
+        SourceIdentifier: REQUIRED_TAGS
+      InputParameters: 
+        tag1Key: !Ref tag1Key
+      Scope:
+        ComplianceResourceTypes: 
+          # - "AWS::ACM::Certificate"
+          # - "AWS::AutoScaling::AutoScalingGroup"
+          - "AWS::CloudFormation::Stack"
+          # - "AWS::CodeBuild::Project"
+          # - "AWS::DynamoDB::Table"
+          # - "AWS::EC2::CustomerGateway"
+          # - "AWS::EC2::Instance"
+          # - "AWS::EC2::InternetGateway"
+          # - "AWS::EC2::NetworkAcl"
+          # - "AWS::EC2::NetworkInterface"
+          # - "AWS::EC2::RouteTable"
+          # - "AWS::EC2::SecurityGroup"
+          # - "AWS::EC2::Subnet"
+          # - "AWS::EC2::Volume"
+          # - "AWS::EC2::VPC"
+          # - "AWS::EC2::VPNConnection"
+          # - "AWS::EC2::VPNGateway"
+          # - "AWS::ElasticLoadBalancing::LoadBalancer"
+          # - "AWS::ElasticLoadBalancingV2::LoadBalancer"
+          # - "AWS::RDS::DBInstance"
+          # - "AWS::RDS::DBSecurityGroup"
+          # - "AWS::RDS::DBSnapshot"
+          # - "AWS::RDS::DBSubnetGroup"
+          # - "AWS::RDS::EventSubscription"
+          # - "AWS::Redshift::Cluster"
+          # - "AWS::Redshift::ClusterParameterGroup"
+          # - "AWS::Redshift::ClusterSecurityGroup"
+          # - "AWS::Redshift::ClusterSnapshot"
+          # - "AWS::Redshift::ClusterSubnetGroup"
+          # - "AWS::S3::Bucket"
