@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: SNS Create
+
+# ------------------------------------------------------------#
+#  Metadata
+# ------------------------------------------------------------#
+Metadata:
+  "AWS::CloudFormation::Interface":
+    ParameterGroups:
+      - Label:
+          default: "SNS Configuration"
+        Parameters:
+        - TopicName
+        - Endpoint
+        - EventCategories
+        - SourceType
+    
+    ParameterLabels:
+      TopicName:
+        default: "DBInstanceName"
+      Endpoint:
+        default: "MailAddress"
+      EventCategories:
+        default: "EventCategories: availability,backtrack,backup,configuration change,creation, deletion, failover, failure, low storage, maintenance, notification, read replica, recovery, restoration" 
+      SourceType:
+        default: "SourceType"    
+
+# ------------------------------------------------------------#
+#  InputParameters
+# ------------------------------------------------------------#
+Parameters:
+  TopicName:
+    Type: String
+    Default: "cfn-sns-topic-inamura"
+  Endpoint:
+    Type: String
+    Default: "lemoned.i.scream.art.of.noise@gmail.com"
+  EventCategories:
+    Default: "availability"
+    Type: CommaDelimitedList
+    AllowedValues: [ "availability", "backtrack", "backup", "configuration change", "creation", "deletion", "failover", "failure", "low storage", "maintenance", "notification", "read replica", "recovery", "restoration" ]
+  SourceType:
+    Default: "db-instance"
+    Type: String
+    AllowedValues: [ "db-instance", "db-security-group", "db-parameter-group", "db-snapshot", "db-cluster", "db-cluster-snapshot" ]
+
+# ------------------------------------------------------------#
+#  Resources
+# ------------------------------------------------------------#
+Resources:
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Ref TopicName
+      Subscription:
+        - Endpoint: !ImportValue cfn-lmd-inamura-arn
+          Protocol: lambda
+        - Endpoint: !Ref Endpoint
+          Protocol: email
+
+  TopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref SNSTopic
+      PolicyDocument:
+        Id: !Ref SNSTopic
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: "*"
+            Action: SNS:Publish
+            Resource: !Ref SNSTopic
+            Condition:
+              ArnLike:
+                aws:SourceArn: !Sub arn:aws:rds:${AWS::Region}:${AWS::AccountId}:*
+
+# ------------------------------------------------------------#
+# Output Parameters
+# ------------------------------------------------------------#                
+Outputs:
+  LambdaArn:
+    Value: !Ref SNSTopic
+    Export:
+      Name: !Sub "${TopicName}-arn"
