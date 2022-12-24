@@ -1,0 +1,28 @@
+{
+  "version":"0",
+  "id":"160f434a-bfd0-c5c2-e0d0-9269710dfaa9",
+  "detail-type":"Config Rules Compliance Change",
+  "source":"aws.config",
+  "account":"717076937412",
+  "time":"2022-12-23T23:13:30Z",
+  "region":"ap-northeast-1",
+  "resources":[],
+  "detail"{
+    "resourceId":"arn:aws:cloudformation:ap-northeast-1:717076937412:stack/cfn-con-requiredtags-inamura/da0e6990-7ec8-11ed-9c20-0a4be92f3779","awsRegion":"ap-northeast-1",
+    "awsAccountId":"717076937412",
+    "configRuleName":"cfn-con-requiredtags-inamura",
+    "recordVersion":"1.0","configRuleARN":"arn:aws:config:ap-northeast-1:717076937412:config-rule/config-rule-ki3set",
+    "messageType":"ComplianceChangeNotification",
+    "newEvaluationResult":{
+      "evaluationResultIdentifier":{
+        "evaluationResultQualifier":{
+          "configRuleName":"cfn-con-requiredtags-inamura","resourceType":"AWS::CloudFormation::Stack","resourceId":"arn:aws:cloudformation:ap-northeast-1:717076937412:stack/cfn-con-requiredtags-inamura/da0e6990-7ec8-11ed-9c20-0a4be92f3779"},"orderingTimestamp":"2022-12-23T23:13:20.709Z"},
+          "complianceType":"NON_COMPLIANT",
+          "resultRecordedTime":"2022-12-23T23:13:30.232Z","configRuleInvokedTime":"2022-12-23T23:13:29.934Z"},
+        "oldEvaluationResult":{
+          "evaluationResultIdentifier":{
+            "evaluationResultQualifier":{
+              "configRuleName":"cfn-con-requiredtags-inamura","resourceType":"AWS::CloudFormation::Stack","resourceId":"arn:aws:cloudformation:ap-northeast-1:717076937412:stack/cfn-con-requiredtags-inamura/da0e6990-7ec8-11ed-9c20-0a4be92f3779"},"orderingTimestamp":"2022-12-18T12:34:18.365Z"},
+              "complianceType":"COMPLIANT",
+              "resultRecordedTime":"2022-12-18T12:34:32.068Z","configRuleInvokedTime":"2022-12-18T12:34:31.748Z"},"notificationCreationTime":"2022-12-23T23:13:30.949Z","resourceType":"AWS::CloudFormation::Stack"}}
+

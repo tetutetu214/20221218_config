@@ -47,10 +47,11 @@ Resources:
           messageType:
             - ComplianceChangeNotification
           configRuleName:
-            - required-tags
+            - cfn-con-requiredtags-inamura
           newEvaluationResult:
             complianceType: 
               - NON_COMPLIANT
+
       Targets:
         - Arn: !ImportValue cfn-sns-topic-inamura-arn
           Id: "cfn-sns-topic-inamura-arn"
@@ -71,4 +72,4 @@ Resources:
 
               "上記リソースが <compliance> 判定となりました。"
               "詳細は以下URLよりご確認ください。"
-              "https://console.aws.amazon.com/config/home?region=<awsRegion>#/timeline/<resourceType>/<resourceId>/configuration"
+              "https://<awsRegion>.console.aws.amazon.com/config/home?region=<awsRegion>#/resources/details?resourceId=<resourceId>&resourceType=<resourceType>"
