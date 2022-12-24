@@ -13,6 +13,7 @@ Metadata:
           - Name
           - EventBusName
           - State
+          - TagsValueUserName
 # ------------------------------------------------------------#
 # Input Parameters
 # ------------------------------------------------------------# 
@@ -26,7 +27,9 @@ Parameters:
   State:
     Type: String
     Default: "ENABLED"
-
+  TagsValueUserName:
+    Type: String
+    Default: "inamura"
 # ------------------------------------------------------------#
 #  EventBridge
 # ------------------------------------------------------------#
@@ -73,3 +76,4 @@ Resources:
               "上記リソースが <compliance> 判定となりました。"
               "詳細は以下URLよりご確認ください。"
               "https://<awsRegion>.console.aws.amazon.com/config/home?region=<awsRegion>#/resources/details?resourceId=<resourceId>&resourceType=<resourceType>"
+
