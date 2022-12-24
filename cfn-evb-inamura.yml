@@ -54,15 +54,15 @@ Resources:
 
       Targets:
         - Arn: !ImportValue cfn-sns-topic-inamura-arn
-          Id: "cfn-sns-topic-inamura-arn"
+          Id: "cfn-sns-topic-transfer"
           InputTransformer:
             InputPathsMap:
-              "awsRegion" : "$.detail.awsRegion"
-              "resourceType" : "$.detail.resourceType"
-              "resourceId" : "$.detail.resourceId"
-              "time" : "$.detail.newEvaluationResult.resultRecordedTime"
-              "compliance" : "$.detail.newEvaluationResult.complianceType"
-              "rule" : "$.detail.configRuleName"
+              "awsRegion": "$.detail.awsRegion"
+              "resourceType": "$.detail.resourceType"
+              "resourceId": "$.detail.resourceId"
+              "time": "$.detail.newEvaluationResult.resultRecordedTime"
+              "compliance": "$.detail.newEvaluationResult.complianceType"
+              "rule": "$.detail.configRuleName"
             InputTemplate: |
               "Userタグのないリソースが作成されました!"
               "発生時間       : <time>"
